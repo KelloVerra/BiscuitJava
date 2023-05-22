@@ -10,7 +10,7 @@ import re
  | |__) | |__  | (___ | |  | | |  | | |__) |_____| \  / |  /  \  | | | |  | | |__) |
  |  _  /|  __|  \___ \| |  | | |  | |  _  /______| |\/| | / /\ \ | | | |  | |  _  / 
  | | \ \| |____ ____) | |__| | |__| | | \ \      | |  | |/ ____ \| | | |__| | | \ \ 
- |_|  \_\______|_____/ \____/ \____/|_|  \_\__   |_|  |_/_/    \_\_|  \____/|_|  \_\
+ |_|  \_\______|_____/ \____/ \____/|_|  \_\     |_|  |_/_/    \_\_|  \____/|_|  \_\
   _                  _   _    _ _   __      __
  | |                | |/ /   | | |  \ \    / /                                      
  | |__  _   _       | ' / ___| | | __\ \  / /__ _ __ _ __ __ _                      
@@ -22,7 +22,7 @@ import re
 
 Frame per frame animation with ease!
 
-Version 1.0.0 ALPHA
+Version 1.0.1 ALPHA
 '''
 
 class unicode:
@@ -188,17 +188,17 @@ def export_font_sequence_func(libr:libr):
     with open(os.path.join(libr.os_path,libr.font_seq_name+"_sequence.mcfunction"), "w") as mcfunc:
         total_frame=len(libr.font_sequence)
         frame=0
-        mcfunc.write("#> Generated using resour-mator by KelloVerra v.1.0.0 ALPHA\n")
+        mcfunc.write("#> Generated using resour-mator by KelloVerra v.1.0.1 ALPHA\n")
         mcfunc.write("#> Replace :\n")
         mcfunc.write("#> <YOUR-TIMER-SCOREBOARD>\n")
-        mcfunc.write("#> <YOUR-ENTITY-TAG>\n\n")
+        mcfunc.write("#> <EVENT-AFTER-SEQUENCE-FINISHED>\n\n")
         mcfunc.write(f"execute unless score @s <YOUR-TIMER-SCOREBOARD> = @s <YOUR-TIMER-SCOREBOARD> run scoreboard players set @s <YOUR-TIMER-SCOREBOARD> {total_frame}\n")
         mcfunc.write(f"scoreboard players remove @s <YOUR-TIMER-SCOREBOARD> 1\n")
         for font in libr.font_sequence:
-            mcfunc.write(f"execute if score @s {frame} run"+" data merge entity @s {text:'{\"text\":\"\\ue000\",\"font\":\""+font+str(frame)+"\"}'}\n")
+            mcfunc.write(f"execute if score @s <YOUR-TIMER-SCOREBOARD> matches {total_frame-frame} run"+" data merge entity @s {text:'{\"text\":\"\\\\ue000\",\"font\":\""+font+str(frame)+"\"}'}\n")
             frame+=1
 
-        mcfunc.write(f"#execute if score @s {frame+1} run <EVENT-AFTER-SEQUENCE-FINISHED>\n")
+        mcfunc.write(f"\n#execute if score @s <YOUR-TIMER-SCOREBOARD> matches ..0 run <EVENT-AFTER-SEQUENCE-FINISHED>")
             
 
 
@@ -377,7 +377,7 @@ def gen(libr:libr):
     if parsebool(libr.advanced_settings["font_sequence_function"]):
         export_font_sequence_func(libr)
 
-# The main quintet
+# The main quartet
 
 library = libr()
 
